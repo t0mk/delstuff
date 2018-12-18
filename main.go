@@ -13,13 +13,14 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ps, _, err := c.Projects.List()
+	ps, _, err := c.Projects.List(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	pids := []string{}
 	for _, p := range ps {
-		if strings.HasPrefix(p.Name, "PACKNGO_TEST_DELME_2d768716_") {
+		if strings.HasPrefix(p.Name, "PACKNGO_TEST_DELME_2d768716_") ||
+			strings.HasPrefix(p.Name, "TerraformTestProject-") {
 			log.Println(p.Name)
 			pids = append(pids, p.ID)
 		}
@@ -42,7 +43,7 @@ func main() {
 			log.Fatal(err)
 		}
 		for _, v := range vs {
-			log.Println("removing vol %s", v.ID)
+			log.Printf("removing vol %s", v.ID)
 			if v.Locked {
 				_, err = c.Volumes.Unlock(v.ID)
 				if err != nil {
@@ -56,7 +57,7 @@ func main() {
 		}
 	}
 	for _, pid := range pids {
-		log.Println("removing project %s", pid)
+		log.Printf("removing project %s", pid)
 		_, err = c.Projects.Delete(pid)
 		if err != nil {
 			log.Fatal(err)
