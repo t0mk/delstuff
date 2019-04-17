@@ -20,6 +20,9 @@ func main() {
 	pids := []string{}
 	for _, p := range ps {
 		if strings.HasPrefix(p.Name, "PACKNGO_TEST_DELME_2d768716_") ||
+			strings.HasPrefix(p.Name, "foobar-") ||
+			strings.HasPrefix(p.Name, "tftest") ||
+			strings.HasPrefix(p.Name, "jrpq6f7n") ||
 			strings.HasPrefix(p.Name, "TerraformTestProject-") {
 			log.Println(p.Name)
 			pids = append(pids, p.ID)
@@ -31,10 +34,10 @@ func main() {
 			log.Fatal(err)
 		}
 		for _, d := range ds {
-			log.Println("removing dev %s", d.ID)
+			log.Printf("removing dev %s", d.ID)
 			_, err = c.Devices.Delete(d.ID)
 			if err != nil {
-				log.Fatal(err)
+				log.Println("ERR, proj", pid, err)
 			}
 		}
 
@@ -60,7 +63,7 @@ func main() {
 		log.Printf("removing project %s", pid)
 		_, err = c.Projects.Delete(pid)
 		if err != nil {
-			log.Fatal(err)
+			log.Println("ERR, proj", pid, err)
 		}
 
 	}
