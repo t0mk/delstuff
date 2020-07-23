@@ -22,6 +22,7 @@ func main() {
 		if strings.HasPrefix(p.Name, "PACKNGO_TEST_DELME_2d768716_") ||
 			strings.HasPrefix(p.Name, "foobar-") ||
 			strings.HasPrefix(p.Name, "tftest") ||
+			strings.HasPrefix(p.Name, "tfacc") ||
 			strings.HasPrefix(p.Name, "jrpq6f7n") ||
 			strings.HasPrefix(p.Name, "TerraformTestProject-") {
 			log.Println(p.Name)
