@@ -21,6 +21,10 @@ func main() {
 	for _, p := range ps {
 		if strings.HasPrefix(p.Name, "PACKNGO_TEST_DELME_2d768716_") ||
 			strings.HasPrefix(p.Name, "foobar-") ||
+			strings.HasPrefix(p.Name, "My project") ||
+			strings.HasPrefix(p.Name, "ansible-inte") ||
+			strings.HasPrefix(p.Name, "ansible-test") ||
+			strings.HasPrefix(p.Name, "ff") ||
 			strings.HasPrefix(p.Name, "tftest") ||
 			strings.HasPrefix(p.Name, "tfacc") ||
 			strings.HasPrefix(p.Name, "jrpq6f7n") ||
@@ -36,35 +40,18 @@ func main() {
 		}
 		for _, d := range ds {
 			log.Printf("removing dev %s", d.ID)
-			_, err = c.Devices.Delete(d.ID)
+			_, err = c.Devices.Delete(d.ID, false)
 			if err != nil {
 				log.Println("ERR, proj", pid, err)
 			}
 		}
 
-		vs, _, err := c.Volumes.List(pid, nil)
-		if err != nil {
-			log.Fatal(err)
-		}
-		for _, v := range vs {
-			log.Printf("removing vol %s", v.ID)
-			if v.Locked {
-				_, err = c.Volumes.Unlock(v.ID)
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-			_, err = c.Volumes.Delete(v.ID)
-			if err != nil {
-				log.Fatal(err)
-			}
-		}
 	}
 	for _, pid := range pids {
 		log.Printf("removing project %s", pid)
 		_, err = c.Projects.Delete(pid)
 		if err != nil {
-			log.Println("ERR, proj", pid, err)
+			log.Println("ERR, proj", pid, err.Error())
 		}
 
 	}
